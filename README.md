@@ -27,7 +27,7 @@ git clone https://github.com/your-username/termui.git
 
 2. Include the termui.h header file in your C project:
 
-```bash
+```c
 #include "lib/termui.h"
 ```
 
