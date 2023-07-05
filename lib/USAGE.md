@@ -11,7 +11,7 @@ typedef struct {
         size_t x_cursor_coord; // X cursor coordinates
         size_t y_cursor_coord; // Y cursor coordinates
 } TerminalStatus;
-TerminalStatus term_info;
+TerminalStatus term_info = { };
 ```
 
 You can use the `TerminalStatus` struct to retrieve information about the terminal's window size and cursor coordinates, enabling you to build interactive terminal applications that adapt to the current terminal environment.
