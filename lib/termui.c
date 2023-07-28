@@ -11,23 +11,24 @@
 #define TERMUI_INITIALIZED_FLAG term_info.termui_initialized
 #define TERM_X_SIZE term_info.x_term_size
 #define TERM_Y_SIZE term_info.y_term_size
-#define CURSOR_X_COORD_ADDR &term_info.x_cursor_coord
-#define CURSOR_Y_COORD_ADDR &term_info.y_cursor_coord
 #define CURSOR_X_COORD term_info.x_cursor_coord
 #define CURSOR_Y_COORD term_info.y_cursor_coord
+#define CURSOR_X_COORD_ADDR &term_info.x_cursor_coord
+#define CURSOR_Y_COORD_ADDR &term_info.y_cursor_coord
+
+#define _TERMUI_MOVE_TO(x, y) (void)printf("\e[%lu;%luH", y, x)
+#define _TERMUI_GO_LEFT() _TERMUI_MOVE_TO(--CURSOR_X_COORD, CURSOR_Y_COORD)
+#define _TERMUI_GO_RIGHT() _TERMUI_MOVE_TO(++CURSOR_X_COORD, CURSOR_Y_COORD)
+#define _TERMUI_GO_UP() _TERMUI_MOVE_TO(CURSOR_X_COORD, --CURSOR_Y_COORD)
+#define _TERMUI_GO_DOWN() _TERMUI_MOVE_TO(CURSOR_X_COORD, ++CURSOR_Y_COORD)
 
 void termui_get_pos(void);
 void termui_get_term_size(void);
-void termui_go_up(void);
-void termui_go_down(void);
-void termui_go_left(void);
-void termui_go_right(void);
-void termui_move_to(const size_t x, const size_t y);
 void termui_draw_border(const char border_char);
 void termui_box_create(const size_t x, const size_t y, const char border_char);
 void termui_box_create_at(const size_t x, const size_t y, const size_t x_coord, const size_t y_coord, const char border_char);
-void termui_text_box(const char *message, const size_t offset, const char border_char);
-void termui_text_box_at(const char *message, const size_t offset, const size_t x_coord, const size_t y_coord, const char border_char);
+void termui_text_box(char *message, const size_t offset, const char border_char);
+void termui_text_box_at(char *message, const size_t offset, const size_t x_coord, const size_t y_coord, const char border_char);
 
 typedef struct {
 	bool termui_initialized;
@@ -71,7 +72,7 @@ void termui_get_pos(void){
 	fflush(stdout);
 
 	// Store cursor position
-	(void)scanf("\033[%d;%dR", CURSOR_Y_COORD_ADDR, CURSOR_X_COORD_ADDR);
+	(void)scanf("\033[%ld;%ldR", CURSOR_Y_COORD_ADDR, CURSOR_X_COORD_ADDR);
 	*CURSOR_X_COORD_ADDR -= 1; // Corrects offset
 	*CURSOR_Y_COORD_ADDR -= 1; // Corrects offset
 
@@ -94,33 +95,6 @@ void termui_get_term_size(void){
 	// Uses ioctl system call to update terminal size values
 	TERM_X_SIZE = size.ws_col;
 	TERM_Y_SIZE = size.ws_row;
-}
-
-void termui_go_left(void){
-	// Stores actual position
-	termui_move_to(--CURSOR_X_COORD, CURSOR_Y_COORD);
-}
-
-void termui_go_right(void){
-	// Stores actual position
-	termui_move_to(++CURSOR_X_COORD, CURSOR_Y_COORD);
-}
-
-void termui_go_up(void){
-	// Stores actual position
-	termui_move_to(CURSOR_X_COORD, --CURSOR_Y_COORD);
-}
-
-void termui_go_down(void){
-	// Stores actual position
-	termui_move_to(CURSOR_X_COORD, ++CURSOR_Y_COORD);
-}
-
-// Moves the cursor to the specified coordinates
-void termui_move_to(const size_t x, const size_t y){
-	if (printf("\e[%lu;%luH", y, x) < 0){
-		(void)fprintf(stderr, "ERROR: failed to move cursor in terminal");
-	}
 }
 
 #include "static_ui.h"
