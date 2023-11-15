@@ -94,15 +94,15 @@ void boxText(terminalInfo *terminal, char *message, const int offset, const char
         while(*tmp_ptr != '\0'){
                 if (*tmp_ptr == '\n'){
                         MoveTo(terminal->x_cursor_coord + 1, ++terminal->y_cursor_coord);
-                        fprintf(stdout, "\v"); // Break line
+                        printf("\v"); // Break line
                         ++tmp_ptr;
                         continue;
                 }
-                fprintf(stdout, "%c", *tmp_ptr);
+                printf("%c", *tmp_ptr);
                 ++tmp_ptr;
         }
         MoveTo(terminal->x_cursor_coord, terminal->y_cursor_coord);
-        fprintf(stdout, "\n");
+        printf("\n");
 }
 
 // Creates a text box with a message inside, a border, and starting coordinates
@@ -113,8 +113,6 @@ void boxTextAt(terminalInfo *terminal, char *message, const int offset, const in
 
         // Build box
         getPosition(terminal); // Updates cursor pos
-        int last_x = terminal->x_cursor_coord;
-        int last_y = terminal->y_cursor_coord;
         boxBuildAt(terminal, x, y, x_coord, y_coord, border_char);
 
         // Print message at given coordinate

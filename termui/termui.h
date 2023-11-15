@@ -4,6 +4,8 @@
 #include <stdbool.h>
 
 #define MoveTo(x, y) (void)printf("\e[%d;%dH", y, x)
+#define ClearLine(y) (void)printf("\e[%d;1H", y); \
+		     (void)printf("\e[K\r");
 //#define GoLeft() MoveTo(--CURSOR_X_COORD, CURSOR_Y_COORD)
 //#define GoRight() MoveTo(++CURSOR_X_COORD, CURSOR_Y_COORD)
 //#define GoUp() MoveTo(CURSOR_X_COORD, --CURSOR_Y_COORD)

@@ -21,7 +21,6 @@ void termuiInit(terminalInfo *terminal)
 // Stores the cursor position
 void getPosition(terminalInfo *terminal)
 {
-        int x, y;
         int t = STDOUT_FILENO;
         struct termios old_terminal_settings;
 
