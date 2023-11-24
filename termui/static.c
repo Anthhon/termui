@@ -126,7 +126,7 @@ void fieldText(fieldContext *field, const char *text)
 {
 	MoveTo(field->x_position, field->y_position);
 
-	if (strlen(text) > field->max_size) {
+	if ((int)strlen(text) > field->max_size) {
 		for (int i = 0; i < field->max_size; ++i) {
 			putc('~', stdout);
 		}
