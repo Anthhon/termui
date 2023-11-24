@@ -15,6 +15,11 @@ void termuiInit(terminalInfo *terminal)
         getPosition(terminal);
         getTermSize(terminal);
         terminal->initialized = true;
+	clearScreen();
+}
+
+void clearScreen(void)
+{
         system("clear");
 }
 

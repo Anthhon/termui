@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -120,3 +121,24 @@ void boxTextAt(terminalInfo *terminal, char *message, const int offset, const in
         printf("%s", message);
         MoveTo(terminal->x_cursor_coord, terminal->y_cursor_coord);
 }
+
+void fieldText(fieldContext *field, const char *text)
+{
+	MoveTo(field->x_position, field->y_position);
+
+	if (strlen(text) > field->max_size) {
+		for (int i = 0; i < field->max_size; ++i) {
+			putc('~', stdout);
+		}
+	} else {
+		fputs(text, stdout);
+	}
+}
+
+// Writes text at the bottom of the screen
+void footerText(terminalInfo *terminal, const char *text, int offset)
+{
+	MoveTo(1, terminal->y_term_size - offset);
+	fputs(text, stdout);
+}
+
